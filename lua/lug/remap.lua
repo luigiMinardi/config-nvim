@@ -1,4 +1,5 @@
-vim.g.mapleader = " "
+-- Map leader moved to lazy.lua due to how lazy works
+-- vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- Making :m amazing
