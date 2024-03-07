@@ -34,3 +34,17 @@ vim.opt.colorcolumn = "80"
 -- Sync clipboard between OS and Neovim.
 --  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
+
+--[[ This will work on Neovim 0.10, now I cry.
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+  },
+}
+]]--

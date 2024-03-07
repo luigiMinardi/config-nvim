@@ -57,7 +57,11 @@ local plugins = {
     "nvim-treesitter/nvim-treesitter-context",
 
     -- Jump files
-    'theprimeagen/harpoon',
+    {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" }
+    },
 
     -- Better undo
     'mbbill/undotree',
