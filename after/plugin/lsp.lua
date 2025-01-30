@@ -43,6 +43,12 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
+vim.api.nvim_create_autocmd("InsertEnter", {
+  callback = function()
+    vim.lsp.buf.signature_help()
+  end,
+})
+
 require('mason').setup()
 require('mason-lspconfig').setup()
 
