@@ -58,7 +58,7 @@ local servers = {
   templ = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  tsserver = {},
+  -- tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
