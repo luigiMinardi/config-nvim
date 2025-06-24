@@ -96,6 +96,11 @@ local plugins = {
     },
 
     {
+        -- LSP Lines
+        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    },
+
+    {
         -- Formatter
         'stevearc/conform.nvim',
         event = { 'BufWritePre' },
