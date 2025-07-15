@@ -35,6 +35,10 @@ vim.opt.colorcolumn = "80"
 --  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
 
+-- Setup python provider
+vim.g.python_host_prog = '/home/lug/.asdf/shims/python3'
+vim.g.python3_host_prog = '/home/lug/.asdf/shims/python3'
+
 --[[ This will work on Neovim 0.10, now I cry.
 vim.g.clipboard = {
   name = 'OSC 52',
@@ -47,4 +51,4 @@ vim.g.clipboard = {
     ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
   },
 }
-]]--
+]] --
