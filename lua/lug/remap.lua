@@ -45,12 +45,14 @@ vim.api.nvim_create_autocmd("FileType", {
             vim.keymap.del("n", "<C-l>", {
                 buffer = true
             })
-            vim.keymap.set("n", "<C-r>", "<Plug>NetrwRefresh", {
+            --[[ Rebinding if needed
+            vim.keymap.set("n", "<C-9>", "<Plug>NetrwRefresh", {
                 buffer = true,
                 silent = true,
                 noremap = true,
                 -- unique = true
             })
+            ]] --
         end)
     end
 })
