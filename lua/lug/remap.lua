@@ -26,6 +26,9 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 -- Don't yank the deletion
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
+-- Don't yank the selection
+vim.keymap.set({ "n", "v" }, "<leader>ci", [["_ci]])
+
 -- Replace current word globally
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
