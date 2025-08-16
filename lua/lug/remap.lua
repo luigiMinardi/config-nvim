@@ -59,3 +59,40 @@ vim.api.nvim_create_autocmd("FileType", {
         end)
     end
 })
+
+
+-- Modify Goto Definition for TS/JS to be able to jump correctly to import function
+local function ts_js_smart_definition()
+    local params = vim.lsp.util.make_position_params(0, "utf-8")
+
+    vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result)
+        if err then
+            vim.notify('LSP error: ' .. err.message, vim.log.levels.ERROR)
+            return
+        end
+
+        if not result or vim.tbl_isempty(result) then
+            vim.notify('No definition found', vim.log.levels.INFO)
+            return
+        end
+
+        -- Jump to the first result
+        local target = type(result) == 'table' and result[1] or result
+        vim.lsp.util.show_document(target, 'utf-8', { focus = true })
+
+        -- If we land on an import line, jump again
+        local current_line = vim.api.nvim_get_current_line()
+        if current_line:match('^%s*import') then
+            vim.defer_fn(function()
+                vim.lsp.buf.definition({ reuse_win = true })
+            end, 50)
+        end
+    end)
+end
+-- Making the remap so that we use the modified Goto definition
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    callback = function()
+        vim.keymap.set('n', 'gd', ts_js_smart_definition, { buffer = true, desc = '[TS/JS] Smart [G]oto [D]efinition' })
+    end,
+})
