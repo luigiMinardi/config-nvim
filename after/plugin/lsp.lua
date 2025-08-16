@@ -64,8 +64,10 @@ vim.keymap.set("", "<leader>l", function()
     end
 end, { desc = "Toggle lsp_lines" })
 
-require('mason').setup()
-require('mason-lspconfig').setup()
+
+-- Configuring Vue LSP
+local vue_language_server_path = vim.fn.stdpath('data') ..
+    '/mason/packages/vue-language-server/node_modules/@vue/language-server'
 
 local servers = {
     -- clangd = {},
@@ -73,9 +75,22 @@ local servers = {
     templ = {},
     -- pyright = {},
     -- rust_analyzer = {},
-    -- tsserver = {},
     html = { filetypes = { 'html', 'twig', 'hbs' } },
-
+    sqls = {},
+    ts_ls = {
+        init_options = {
+            plugins = {
+                {
+                    name = '@vue/typescript-plugin',
+                    location = vue_language_server_path,
+                    languages = { 'vue' },
+                    configNamespace = 'typescript',
+                },
+            },
+        },
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+    },
+    vue_ls = {},
     lua_ls = {
         settings = {
             Lua = {
@@ -100,12 +115,9 @@ local servers = {
     },
 }
 
--- Setup neovim lua configuration
-require('neodev').setup()
+-- vim.lsp.set_log_level("debug")
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+require('mason').setup()
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -115,26 +127,20 @@ mason_lspconfig.setup {
     automatic_enable = true
 }
 
---[[
-mason_lspconfig.setup_handlers {
-    function(server_name)
-        require('lspconfig')[server_name].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
-        }
-    end,
-}
-]] --
+for server_name, config in pairs(servers) do
+    vim.lsp.config(server_name, config)
+end
 
 vim.lsp.config('*', {
     on_attach = on_attach,
 })
 
-for server_name, config in pairs(servers) do
-    vim.lsp.config(server_name, config)
-end
+-- Setup neovim lua configuration
+require('neodev').setup()
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
