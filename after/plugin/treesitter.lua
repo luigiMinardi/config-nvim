@@ -1,9 +1,7 @@
-require 'nvim-treesitter.configs'.setup {
-    -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "javascript", "typescript", "python", "c", "lua", "vim", "vimdoc", "query", "rust", "templ" },
+require('nvim-treesitter').setup {
 
-    -- Install parsers synchronously (only applied to `ensure_installed`)
-    sync_install = false,
+    -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
+    install_dir = vim.fn.stdpath('data') .. '/site',
 
     -- Automatically install missing parsers when entering buffer
     -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
@@ -25,6 +23,8 @@ require 'nvim-treesitter.configs'.setup {
         additional_vim_regex_highlighting = false,
     },
 }
+-- A list of parser names, or "all" (the five listed parsers should always be installed)
+require('nvim-treesitter').install { "javascript", "typescript", "python", "c", "lua", "vim", "vimdoc", "query", "rust", "templ" }
 
 require 'treesitter-context'.setup {
     enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -42,24 +42,9 @@ require 'treesitter-context'.setup {
     on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 }
 
+-- add templ support
 vim.filetype.add({
     extension = {
         templ = "templ",
     },
 })
-
---[[
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.flatbuffers = {
-    install_info = {
-        url = "/home/lug/programming/random/tree-sitter-flatbuffers", -- local path or git repo
-        files = { "src/parser.c" },                                   -- note that some parsers also require src/scanner.c or src/scanner.cc
-        -- optional entries:
-        branch = "main",                                              -- default branch in case of git repo if different from master
-        generate_requires_npm = false,                                -- if stand-alone parser without npm dependencies
-        requires_generate_from_grammar = false,                       -- if folder contains pre-generated src/parser.c
-    },
-    filetype = "fbs",                                                 -- if filetype does not match the parser name
-}
-vim.treesitter.language.register('flatbuffers', 'fbs')                -- the someft fbs will use the flatbuffers parser and queries.
-]]--

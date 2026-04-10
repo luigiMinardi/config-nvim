@@ -15,7 +15,7 @@ local plugins = {
     -- Fuzzy Finder (files, lsp, etc)
     {
         'nvim-telescope/telescope.nvim',
-        branch = '0.1.x',
+        version = '*',
         dependencies = {
             'nvim-lua/plenary.nvim',
             -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -46,13 +46,30 @@ local plugins = {
     -- Highlight, edit, and navigate code
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = "main",
         dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
+            {
+                "nvim-treesitter/nvim-treesitter-textobjects",
+                branch = "main",
+                init = function()
+                    -- Disable entire built-in ftplugin mappings to avoid conflicts.
+                    -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
+                    vim.g.no_plugin_maps = true
+
+                    -- Or, disable per filetype (add as you like)
+                    -- vim.g.no_python_maps = true
+                    -- vim.g.no_ruby_maps = true
+                    -- vim.g.no_rust_maps = true
+                    -- vim.g.no_go_maps = true
+                end,
+                config = function()
+                    -- put your config here
+                end,
+            }
         },
+        lazy = false,
         build = ':TSUpdate',
     },
-
-    'nvim-treesitter/playground',
 
     "nvim-treesitter/nvim-treesitter-context",
 
